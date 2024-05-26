@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ranking</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<header>Header</header>
+
+<main class="container">
+    <div class="py-4 mh-100 row m-4 text-center" th:each="num : ${#numbers.sequence(0, 2)}">
+        <div class="col-2 bg-black text-white d-flex align-items-center align-middle" th:text="${num + 1}"></div>
+        <div class="col-10 text-xxl-center">
+            <div class="d-flex justify-content-around">
+                <div th:text="${rankingList.get(num).username()}">username</div>
+                <div th:text="${rankingList.get(num).playDate()}">playdate</div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar"
+                     role="progressbar"
+                     th:style="${'width: ' + #numbers.formatInteger(100.0 * rankingList.get(num).score() / rankingList.get(0).score(), 0) + '%'}"
+                     th:text="${rankingList.get(num).score()}"
+                     aria-valuenow="${rankingList.get(num).score()}"
+                     aria-valuemin="0"
+                     aria-valuemax="100%">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table-hover m-4">
+        <tr>
+            <td>Ranking</td>
+            <td>UserName</td>
+            <td>score</td>
+            <td>playDate</td>
+        </tr>
+        <tr th:each="game, num : ${rankingList}" th:if="${num.count > 3}">
+            <td th:text="${num.count}">count</td>
+            <td th:text="${game.username()}">username</td>
+            <td th:text="${game.score()}">score</td>
+            <td th:text="${game.playDate()}">playdate</td>
+        </tr>
+    </table>
+</main>
+
+<a href="/" class="btn btn-primary">Back</a>
+
+</body>
+</html>
