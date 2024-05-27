@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<header>Header</header>
+<header th:replace="/header :: header"></header>
 
 <main class="container">
     <div class="py-4 mh-100 row m-4 text-center" th:each="num : ${#numbers.sequence(0, 2)}">
