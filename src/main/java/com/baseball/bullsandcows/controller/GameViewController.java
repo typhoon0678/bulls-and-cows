@@ -30,7 +30,7 @@ public class GameViewController {
 
 	@GetMapping("/mypage")
 	public String mypage(Model model) {
-		Long id = 1L;
+		Long id = 6L;
 
 		User user = userService.findById(id);
 		model.addAttribute("user", user);

@@ -5,13 +5,255 @@
     <title>Bulls And Cows</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
 <header th:replace="/header :: header"></header>
 
-<a href="/mypage" class="btn btn-primary">MyPage</a>
-<a href="/ranking" class="btn btn-primary">Ranking</a>
+<main class="container-fluid">
+    <div class="row">
+        <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+            <div class="m-2 border border-secondary container-fluid"
+                 style="display: block; width: 300px; height: 200px;"
+                 th:id="'div-try-' + ${i}">
+                <div class="row h-50">
+                    <th:block th:each="j : ${#numbers.sequence(1, 3)}">
+                        <div class="col border border-primary d-flex align-items-center justify-content-center">
+                            <img th:id="'img-circle-' + ${i} + '-' + ${j}"
+                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
+                                 th:alt="'circle-' + ${j}">
+                        </div>
+                    </th:block>
+                </div>
+                <div class="row h-50">
+                    <th:block th:each="j : ${#numbers.sequence(1, 3)}">
+                        <div class="col border border-primary d-flex align-items-center justify-content-center"
+                             th:id="'judge-' + ${i} + '-' + ${j}">
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </th:block>
+    </div>
+
+    <div class="container-fluid">
+        <th:block th:each="i : ${#numbers.sequence(0, 9)}">
+            <button class="btn btn-outline-primary" th:id="'btn-num-' + ${i}">[[${i}]]</button>
+        </th:block>
+        <button class="btn btn-primary" id="btn-num-submit">Submit</button>
+        <button class="btn btn-danger" id="btn-num-reset">Reset</button>
+    </div>
+
+    <a class="btn btn-primary" id="btn-play">Play</a>
+    <a class="btn btn-primary" id="btn-continue">Continue</a>
+</main>
+
+<script th:inline="javascript">
+
+    var gameID = 0;
+    var userID = 6;
+    var tryCount = -1;
+
+    const divTryIDHead = "#div-try-";
+    var divTryID = divTryIDHead + "1";
+
+    const imgSrcHead = "/static/image/circle-";
+    const imgFormat = ".png";
+    var imgSrc = imgSrcHead + "1" + imgFormat;
+
+    const imgCircleIDHead = "#img-circle-";
+    var imgCircleID = imgCircleIDHead + "1" + "-" + "1";
+    var imgCircleList = [];
+    for (let i = 1; i <= 5; i++) {
+        for (let j = 1; j <= 3; j++) {
+            imgCircleList.push($(divTryIDHead + i + " " + imgCircleIDHead + i + "-" + j));
+        }
+    }
+
+    const divJudgeIDHead = "#judge-";
+    var divJudgeID = divJudgeIDHead + "1" + "-" + "1";
+    var divJudgeList = [];
+    for (let i = 1; i <= 5; i++) {
+        for (let j = 1; j <= 3; j++) {
+            divJudgeList.push($(divTryIDHead + i + " " + divJudgeIDHead + i + "-" + j));
+        }
+    }
+
+    const btnNumIDHead = "#btn-num-";
+    // var btnNumID = btnNumIDHead + "1";
+    var btnNumList = [];
+    for (let i = 0; i <= 9; i++) {
+        btnNumList.push($(btnNumIDHead + i));
+    }
+
+    var fillNumIndex = 1;
+
+    const emptyPNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=";
+
+    var dataNumList = [1, 2, 3];
+    var dataNum = "123";
+
+    $.each(btnNumList, function (index, btnNum) {
+        btnNum.on("click", function () {
+            if (fillNumIndex > 3) return;
+
+            imgSrc = imgSrcHead + index + imgFormat
+            divTryID = divTryIDHead + (6 - tryCount);
+            imgCircleID = imgCircleIDHead + (6 - tryCount) + "-" + fillNumIndex;
+
+            $(divTryID + " " + imgCircleID).attr("src", imgSrc);
+
+            dataNumList[fillNumIndex - 1] = index;
+
+            fillNumIndex++;
+        });
+    });
+
+
+    $("#btn-num-reset").on("click", function () {
+        divTryID = divTryIDHead + (6 - tryCount);
+
+        for (let i = 1; i <= 3; i++) {
+            imgCircleID = imgCircleIDHead + (6 - tryCount) + "-" + i;
+
+            $(divTryID + " " + imgCircleID).attr("src", emptyPNG);
+
+            fillNumIndex = 1;
+        }
+    });
+
+    $("#btn-num-submit").on("click", function () {
+        if (fillNumIndex <= 3) return;
+
+        dataNum = dataNumList[0].toString() + dataNumList[1].toString() + dataNumList[2].toString();
+
+        $.ajax({
+            url: "/api/game/checkNum",
+            type: "post",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                "gameOption": "continue",
+                "gameID": gameID,
+                "userID": userID,
+                "num": dataNum
+            }),
+            success: function (res) {
+
+                responseLog(res);
+                fillNumIndex = 1;
+
+                if (res.gameResult === "continue") {
+                    var divTryID = divTryIDHead + (6 - tryCount);
+
+                    for (let i = 1; i <= 3; i++) {
+                        var divJudgeID = divJudgeIDHead + (6 - tryCount) + "-" + i;
+
+                        if (i <= res.judgement[0]) {
+                            $(divTryID + " " + divJudgeID).text("Strike");
+                        } else if (i <= res.judgement[0] + res.judgement[1]) {
+                            $(divTryID + " " + divJudgeID).text("Ball");
+                        } else {
+                            $(divTryID + " " + divJudgeID).text("Out");
+                        }
+                    }
+
+                    tryCount -= 1; // tryCount = res.tryCount;
+
+                } else if (res.gameResult === "next") {
+                    tryCount = -1;
+                    // todo : continue button
+
+                } else if (res.gameResult === "gameOver") {
+                    console.log("gameOver");
+                } else {
+                    alert("Error");
+                }
+
+            },
+            error: function (res) {
+                alert(res);
+            }
+        });
+    });
+
+    $("#btn-play").on("click", function () {
+        $.ajax({
+            url: "/api/game/checkNum",
+            type: "post",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                "gameOption": "new",
+                "gameID": gameID,
+                "userID": userID,
+                "num": "111"
+            }),
+            success: function (res) {
+                responseLog(res);
+
+                gameID = res.gameID;
+                tryCount = 5; // tryCount = res.tryCount;
+                fillNumIndex = 1;
+                $("#btn-play").toggle(false);
+
+            },
+            error: function (res) {
+                alert(res);
+            }
+        });
+    });
+
+    $("#btn-continue").on("click", function () {
+        $.ajax({
+            url: "/api/game/checkNum",
+            type: "post",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                "gameOption": "next",
+                "gameID": gameID,
+                "userID": userID,
+                "num": "111"
+            }),
+            success: function (res) {
+                responseLog(res);
+
+                gameID = res.gameID;
+                tryCount = 5; // tryCount = res.tryCount;
+                fillNumIndex = 1;
+
+                resetImgAndJudge();
+
+            },
+            error: function (res) {
+                alert(res);
+            }
+        });
+    });
+
+
+    function resetImgAndJudge() {
+        $.each(imgCircleList, function (index, imgCircle) {
+            imgCircle.attr("src", emptyPNG);
+        });
+
+        $.each(divJudgeList, function (index, divJudge) {
+            divJudge.text("");
+        });
+    }
+
+    function responseLog(res) {
+        console.log("-------------------------------");
+        console.log("gameID : " + res.gameID);
+        console.log("userID : " + res.userID);
+        console.log("addScore : " + res.addScore);
+        console.log("totalScore : " + res.totalScore);
+        console.log("tryCount : " + res.tryCount);
+        console.log("gameResult : " + res.gameResult);
+        console.log("judgement : " + res.judgement);
+        console.log("--------------------------------");
+    }
+
+</script>
 
 </body>
 </html>
