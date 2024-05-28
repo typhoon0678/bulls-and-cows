@@ -15,7 +15,7 @@
         <div class="col-2 bg-black text-white d-flex align-items-center align-middle" th:text="${num + 1}"></div>
         <div class="col-10 text-xxl-center">
             <div class="d-flex justify-content-around">
-                <div th:text="${rankingList.get(num).username()}">username</div>
+                <div th:text="${rankingList.get(num).email()}">email</div>
                 <div th:text="${rankingList.get(num).playDate()}">playdate</div>
             </div>
             <div class="progress">
@@ -34,13 +34,13 @@
     <table class="table-hover m-4">
         <tr>
             <td>Ranking</td>
-            <td>UserName</td>
+            <td>Email</td>
             <td>score</td>
             <td>playDate</td>
         </tr>
         <tr th:each="game, num : ${rankingList}" th:if="${num.count > 3}">
             <td th:text="${num.count}">count</td>
-            <td th:text="${game.username()}">username</td>
+            <td th:text="${game.email()}">email</td>
             <td th:text="${game.score()}">score</td>
             <td th:text="${game.playDate()}">playdate</td>
         </tr>
