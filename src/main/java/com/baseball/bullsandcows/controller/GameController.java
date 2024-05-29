@@ -2,10 +2,12 @@ package com.baseball.bullsandcows.controller;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.baseball.bullsandcows.domain.GameDTO;
 import com.baseball.bullsandcows.domain.GameForm;
@@ -13,23 +15,26 @@ import com.baseball.bullsandcows.domain.User;
 import com.baseball.bullsandcows.service.GameService;
 import com.baseball.bullsandcows.service.UserService;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 @Controller
 public class GameController {
 
 	GameService gameService;
 	UserService userService;
 
+	@Autowired
+	public GameController(GameService gameService, UserService userService) {
+		this.gameService = gameService;
+		this.userService = userService;
+	}
+
 	@GetMapping("/api/checkNum")
 	public String findRound() {
 
-		return "/api/checkNum";
+		return "/index";
 	}
 
 	@PostMapping("/api/checkNum")
-	public String conductRound(GameForm gameForm, Model model) {
+	public String conductRound(@RequestBody GameForm gameForm, Model model) {
 
 		Optional<User> one = userService.findOne(gameForm.getUserID());
 
@@ -39,18 +44,18 @@ public class GameController {
 			case "new" -> {
 				GameDTO gameDTO = gameService.newGame(user);
 				model.addAttribute("gameDTO", gameDTO);
-				return "/api/checkNum";
+				return "/index";
 			}
 			case "next" -> {
 				GameDTO gameDTO = gameService.moveNextStage(user, gameForm.getGameID());
 				model.addAttribute("gameDTO", gameDTO);
-				return "/api/checkNum";
+				return "/index";
 			}
 			case "continue" -> {
 
-				GameDTO gameDTO = gameService.judgeGame(gameForm.getBallNum(), gameForm.getGameID(), user);
+				GameDTO gameDTO = gameService.judgeGame(gameForm.getNum(), gameForm.getGameID(), user);
 				model.addAttribute("gameDTO", gameDTO);
-				return "/api/checkNum";
+				return "/index";
 			}
 		}
 
