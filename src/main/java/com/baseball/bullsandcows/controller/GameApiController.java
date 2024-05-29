@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/game")
+@RequestMapping(value = "/api")
 public class GameApiController {
 
 	private final GameService gameService;
@@ -24,11 +24,11 @@ public class GameApiController {
 		return CheckNumResponse.builder()
 			.gameID(checkNumRequest.getGameID())
 			.userID(checkNumRequest.getUserID())
-			.addScore(0)
-			.totalScore(0)
+			.addScore(100)
+			.totalScore(1000)
 			.tryCount(4)
-			.gameResult("continue")
-			.judgement(new int[] {1, 1})
+			.gameResult("next")  // "continue", "next", "gameOver"
+			.judgement(new int[] {1, 1})  // "strike", "ball", ("out")
 			.build();
 	}
 }
