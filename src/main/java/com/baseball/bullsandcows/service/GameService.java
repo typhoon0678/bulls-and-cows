@@ -53,7 +53,13 @@ public class GameService {
 		String randomNums = randomNumsToString();
 
 		int addScore = calculateStageScore(game.getTryCount());
-		Optional<Game> updateGame = gameRepository.updateNextStageGame(randomNums, addScore, gameID, user);
+		int result = gameRepository.updateNextStageGame(randomNums, addScore, gameID, user);
+
+		Optional<Game> updateGame = Optional.empty();
+
+		if(result > 0) {
+			updateGame = gameRepository.findByIdAndUser(gameID, user);
+		}
 
 		Game game1 = updateGame.orElseThrow(() -> new IllegalStateException("[ERROR] 업데이트 오류"));
 
@@ -72,10 +78,14 @@ public class GameService {
 
 	public GameDTO judgeGame(String inputNums, Long gameID, User user) {
 
-		Optional<Game> findGame = gameRepository.judgeGameByIdAndUser(gameID, user);
+		int result = gameRepository.judgeGameByIdAndUser(gameID, user);
+		Optional<Game> findGame = Optional.empty();
+
+		if(result > 0) {
+			findGame = gameRepository.findByIdAndUser(gameID, user);
+		}
 
 		Game game = findGame.orElseThrow(() -> new IllegalStateException("게임아이디와 유저아이디가 일치하지 않습니다."));
-
 		String outputNums = game.getNums();
 
 		List<Integer> userNums = Arrays.stream(inputNums.split(""))
