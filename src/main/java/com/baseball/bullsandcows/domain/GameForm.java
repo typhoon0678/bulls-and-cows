@@ -10,5 +10,5 @@ public class GameForm {
 	String gameOption;
 	Long gameID;
 	Long userID;
-	String ballNum;
+	String num;
 }
