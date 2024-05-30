@@ -1,7 +1,5 @@
 package com.baseball.bullsandcows.domain;
 
-import javax.management.relation.Role;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,13 +31,18 @@ public class User {
 	private Role role;
 
 	@Builder
-	public User(String email) {
+	public User(String email, Role role) {
 		this.email = email;
+		this.role = role;
 	}
 
 	public User update(String email) {
 		this.email = email;
 		return this;
+	}
+
+	public String getRoleKey() {
+		return this.role.getKey();
 	}
 
 }
