@@ -180,7 +180,7 @@
                 }
 
                 if (res.gameResult === "continue") {
-                    tryCount -= 1; // tryCount = res.tryCount;
+                    tryCount = res.tryCount;
 
                     updateInfoScore("Stage " + stage, score);
 
@@ -226,7 +226,7 @@
                 responseLog(res);
 
                 gameID = res.gameID;
-                tryCount = 5; // tryCount = res.tryCount;
+                tryCount = 5;
                 fillNumIndex = 1;
                 stage = 1;
                 updateInfoScore("Stage " + 1, 0);
@@ -256,7 +256,7 @@
                 responseLog(res);
 
                 gameID = res.gameID;
-                tryCount = 5; // tryCount = res.tryCount;
+                tryCount = 5;
                 fillNumIndex = 1;
                 stage++;
 
