@@ -2,6 +2,8 @@ package com.baseball.bullsandcows.DTO;
 
 import java.util.Map;
 
+import com.baseball.bullsandcows.domain.User;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -38,11 +40,9 @@ public class OAuthAttributes {
 			.build();
 	}
 
-	// public User toEntity() {
-	// 	return User.builder()
-	// 		.name(name)
-	// 		.email(email)
-	// 		.role(Role.USER)
-	// 		.build();
-	// }
+	public User toEntity() {
+		return User.builder()
+			.email(email)
+			.build();
+	}
 }
