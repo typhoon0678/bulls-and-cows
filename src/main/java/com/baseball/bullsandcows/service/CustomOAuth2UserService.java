@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.baseball.bullsandcows.DTO.OAuthAttributes;
+import com.baseball.bullsandcows.domain.SessionUser;
 import com.baseball.bullsandcows.domain.User;
 import com.baseball.bullsandcows.repository.UserRepository;
 
