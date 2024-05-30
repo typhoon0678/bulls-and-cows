@@ -1,4 +1,4 @@
-package com.earlyword.config;
+package com.baseball.bullsandcows.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import com.BullsAndCows.service.CustomOAuth2UserService;
+import com.baseball.bullsandcows.service.CustomOAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
