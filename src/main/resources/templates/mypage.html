@@ -11,15 +11,29 @@
 <header th:replace="/header :: header"></header>
 
 <main class="container">
-    <div class="m-4">
-        <div th:text="${'Game Count : ' + stat.gameCount()}"></div>
-        <div th:text="${'Score Average : ' + stat.scoreAverage()}"></div>
+    <h2 class="m-4">Stat</h2>
+    <div class="row row-cols-2">
+        <div class="col d-flex flex-column justify-content-center align-items-center border border-secondary-subtle">
+            <h2>Ranking</h2>
+            <h3 th:text="${1}"></h3>
+            <!--            <h3 th:text="${stat.ranking()}"></h3>-->
+        </div>
+        <div class="col d-flex flex-column justify-content-center align-items-center border border-secondary-subtle">
+            <h2>Best Score</h2>
+            <h3 th:text="${2000}"></h3>
+            <!--            <h3 th:text="${stat.bestScore()}"></h3>-->
+        </div>
+        <div class="col d-flex flex-column justify-content-center align-items-center border border-secondary-subtle">
+            <h2>Play Count</h2>
+            <h3 th:text="${stat.gameCount()}"></h3>
+        </div>
+        <div class="col d-flex flex-column justify-content-center align-items-center border border-secondary-subtle">
+            <h2>Score Average</h2>
+            <h3 th:text="${stat.scoreAverage()}"></h3>
+        </div>
     </div>
 
-    <div class="m-4">
-        <div th:text="${'email : ' + user.getEmail()}"></div>
-    </div>
-
+    <h2 class="mt-4 m-2">Records</h2>
     <table class="table table-hover m-4">
         <tr>
             <td>No</td>
@@ -32,6 +46,22 @@
             <td th:text="${game.playDate}">playdate</td>
         </tr>
     </table>
+
+    <h2 class="mt-4 m-2">User Info</h2>
+    <div class="m-4">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th th:text="${user.getEmail()}"></th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
 
 <a href="/" class="btn btn-primary">Back</a>

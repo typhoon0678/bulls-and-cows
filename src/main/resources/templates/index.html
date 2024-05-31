@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Bulls And Cows</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!--    <link href="/css/bootstrap.min.css" rel="stylesheet">-->
-    <!--    <script src="/js/bootstrap.bundle.min.js"></script>-->
-    <!--    <script src="/js/jquery-3.7.1.min.js"></script>-->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
-<!--<header th:replace="/header :: header"></header>-->
+<header th:replace="/header :: header"></header>
 
 <main class="container-fluid">
 
-    <div class="mh-100" style="height: 200px;">
-        <div class="d-flex justify-content-around">
-            <div class="container d-flex justify-content-center my-4" id="div-info" style="font-size: 24px"></div>
-            <div class="container d-flex justify-content-center my-4" id="div-score" style="font-size: 24px"></div>
-        </div>
-
-        <a class="btn btn-primary d-flex justify-content-center m-3" id="btn-play">Play</a>
-        <a class="btn btn-outline-primary d-flex justify-content-center m-3" id="btn-next">Next</a>
+    <div class="mh-100 mb-4 row" style="height: 64px;">
+            <div class="col-4">
+                <div class="container d-flex justify-content-center align-items-center" id="div-info" style="font-size: 24px; height: 64px;"></div>
+            </div>
+            <div class="col-4 border border-black border-top-0 border-bottom-0 position-relative" style="height: 64px;">
+                <a class="btn btn-outline-primary position-absolute top-50 start-50 translate-middle px-5 py-2" id="btn-next">Next</a>
+                <a class="btn btn-primary position-absolute top-50 start-50 translate-middle px-5 py-2" id="btn-play">Play</a>
+            </div>
+            <div class="col-4">
+                <div class="container d-flex justify-content-center align-items-center" id="div-score" style="font-size: 24px; height: 64px;"></div>
+            </div>
     </div>
 
-    <div class="row">
+    <div class="d-flex flex-wrap justify-content-center">
         <th:block th:each="i : ${#numbers.sequence(1, 5)}">
             <div class="m-2 border border-secondary container-fluid"
                  style="display: block; width: 300px; height: 200px;"
@@ -42,8 +42,8 @@
                 </div>
                 <div class="row h-50">
                     <th:block th:each="j : ${#numbers.sequence(1, 3)}">
-                        <div class="col border border-primary d-flex align-items-center justify-content-center"
-                        ><h3 th:id="'judge-' + ${i} + '-' + ${j}" style="-webkit-text-stroke: 0.4px black;"></h3>
+                        <div class="w-50 d-flex flex-wrap align-items-center justify-content-center">
+                            <h3 th:id="'judge-' + ${i} + '-' + ${j}" style="-webkit-text-stroke: 0.4px black;"></h3>
                         </div>
                     </th:block>
                 </div>
@@ -52,7 +52,7 @@
     </div>
 
     <div class="container-fluid d-flex justify-content-center">
-        <th:block th:each="i : ${#numbers.sequence(0, 9)}">
+        <th:block th:each="i : ${#numbers.sequence(1, 9)}">
             <button class="btn btn-outline-primary m-2" th:id="'btn-num-' + ${i}">[[${i}]]</button>
         </th:block>
     </div>
@@ -67,27 +67,27 @@
 
 <script th:inline="javascript">
 
-    var gameID = 0;
-    var userID = 6;
-    var tryCount = -1
-    var score = 0;
+    let gameID = 0;
+    let userID = 6;
+    let tryCount = -1
+    let score = 0;
 
-    var fillNumIndex = 1;
-    var dataNumList = [1, 2, 3];
-    var dataNum = "123";
+    let fillNumIndex = 1;
+    let dataNumList = [1, 2, 3];
+    let dataNum = "123";
 
-    var stage = 1;
+    let stage = 1;
 
     const divTryIDHead = "#div-try-";
-    var divTryID = divTryIDHead + "1";
+    let divTryID = divTryIDHead + "1";
 
     const imgSrcHead = "/static/image/circle-";
     const imgFormat = ".png";
     var imgSrc = imgSrcHead + "1" + imgFormat;
 
     const imgCircleIDHead = "#img-circle-";
-    var imgCircleID = imgCircleIDHead + "1" + "-" + "1";
-    var imgCircleList = [];
+    let imgCircleID = imgCircleIDHead + "1" + "-" + "1";
+    let imgCircleList = [];
     for (let i = 1; i <= 5; i++) {
         for (let j = 1; j <= 3; j++) {
             imgCircleList.push($(divTryIDHead + i + " " + imgCircleIDHead + i + "-" + j));
@@ -95,8 +95,8 @@
     }
 
     const divJudgeIDHead = "#judge-";
-    var divJudgeID = divJudgeIDHead + "1" + "-" + "1";
-    var divJudgeList = [];
+    let divJudgeID = divJudgeIDHead + "1" + "-" + "1";
+    let divJudgeList = [];
     for (let i = 1; i <= 5; i++) {
         for (let j = 1; j <= 3; j++) {
             divJudgeList.push($(divTryIDHead + i + " " + divJudgeIDHead + i + "-" + j));
@@ -104,26 +104,33 @@
     }
 
     const btnNumIDHead = "#btn-num-";
-    var btnNumID = btnNumIDHead + "1";
-    var btnNumList = [];
-    for (let i = 0; i <= 9; i++) {
+    let btnNumID = btnNumIDHead + "1";
+    let btnNumList = [];
+    for (let i = 1; i <= 9; i++) {
         btnNumList.push($(btnNumIDHead + i));
     }
 
-    const emptyPNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=";
+    let isPlay = false;
+    let judgeList = [];
+    let judgeText = "";
 
+    const emptyPNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=";
+    const judgeTextList = [" Strike", " Ball", " Out"];
+    const judgeColorList = ["green", "yellow", "red"];
 
     $.each(btnNumList, function (index, btnNum) {
         btnNum.on("click", function () {
+            let imgNum = index + 1;
+
             if (fillNumIndex > 3) return;
 
-            imgSrc = imgSrcHead + index + imgFormat
+            imgSrc = imgSrcHead + imgNum + imgFormat
             divTryID = divTryIDHead + (6 - tryCount);
             imgCircleID = imgCircleIDHead + (6 - tryCount) + "-" + fillNumIndex;
 
             $(divTryID + " " + imgCircleID).attr("src", imgSrc);
 
-            dataNumList[fillNumIndex - 1] = index;
+            dataNumList[fillNumIndex - 1] = imgNum;
 
             fillNumIndex++;
         });
@@ -162,27 +169,20 @@
                 responseLog(res);
                 fillNumIndex = 1;
 
-                var divTryID = divTryIDHead + (6 - tryCount);
+                judgeList = [res.judgement[0], res.judgement[1], 3 - res.judgement[0] - res.judgement[1]]
+                divTryID = divTryIDHead + (6 - tryCount);
 
                 for (let i = 1; i <= 3; i++) {
-                    var divJudgeID = divJudgeIDHead + (6 - tryCount) + "-" + i;
+                    divJudgeID = divJudgeIDHead + (6 - tryCount) + "-" + i;
+                    judgeText = judgeList[i-1] + judgeTextList[i-1];
 
-                    if (i <= res.judgement[0]) {
-                        $(divTryID + " " + divJudgeID).text("Strike");
-                        $(divTryID + " " + divJudgeID).css("color", "green");
-                    } else if (i <= res.judgement[0] + res.judgement[1]) {
-                        $(divTryID + " " + divJudgeID).text("Ball");
-                        $(divTryID + " " + divJudgeID).css("color", "yellow");
-                    } else {
-                        $(divTryID + " " + divJudgeID).text("Out");
-                        $(divTryID + " " + divJudgeID).css("color", "red");
-                    }
+                    $(divTryID + " " + divJudgeID).text(judgeText);
                 }
 
                 if (res.gameResult === "continue") {
                     tryCount = res.tryCount;
 
-                    updateInfoScore("Stage " + stage, score);
+                    updateInfoScore("Stage : " + stage, score);
 
                 } else if (res.gameResult === "next") {
                     tryCount = -1;
@@ -194,10 +194,10 @@
 
                 } else if (res.gameResult === "gameOver") {
                     tryCount = -1;
-                    console.log("gameOver");
+                    isPlay = false;
 
-                    $("#div-score").text("GameOver");
                     updateInfoScore("GameOver", res.totalScore);
+                    $("#div-score").text("GameOver");
                     $("#btn-play").css("visibility", "visible");
 
                 } else {
@@ -229,7 +229,8 @@
                 tryCount = 5;
                 fillNumIndex = 1;
                 stage = 1;
-                updateInfoScore("Stage " + 1, 0);
+                isPlay = true;
+                updateInfoScore("Stage : " + 1, 0);
                 resetImgAndJudge();
 
                 $("#btn-play").css("visibility", "hidden");
@@ -300,7 +301,25 @@
         $("#div-score").text("Score : " + score);
     }
 
+
     $("#btn-next").css("visibility", "hidden");
+
+    for (let i=1; i<=5; i++) {
+        divTryID = divTryIDHead + (6 - i);
+
+        for (let j=1; j<=3; j++) {
+            divJudgeID = divJudgeIDHead + (6 - i) + "-" + j;
+
+            $(divTryID + " " + divJudgeID).css("color", judgeColorList[j-1]);
+        }
+    }
+
+    window.addEventListener('beforeunload', function (e) {
+      if (isPlay) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
 
 </script>
 

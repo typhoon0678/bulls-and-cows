@@ -11,27 +11,29 @@
 <header th:replace="/header :: header"></header>
 
 <main class="container">
-    <div class="py-4 mh-100 row m-4 text-center" th:each="num : ${#numbers.sequence(0, 2)}">
-        <div class="col-2 bg-black text-white d-flex align-items-center align-middle" th:text="${num + 1}"></div>
-        <div class="col-10 text-xxl-center">
-            <div class="d-flex justify-content-around">
-                <div th:text="${rankingList.get(num).email()}">email</div>
-                <div th:text="${rankingList.get(num).playDate()}">playdate</div>
-            </div>
-            <div class="progress">
-                <div class="progress-bar"
-                     role="progressbar"
-                     th:style="${'width: ' + #numbers.formatInteger(100.0 * rankingList.get(num).score() / rankingList.get(0).score(), 0) + '%'}"
-                     th:text="${rankingList.get(num).score()}"
-                     aria-valuenow="${rankingList.get(num).score()}"
-                     aria-valuemin="0"
-                     aria-valuemax="100%">
+    <div class="d-flex flex-column py-4 mh-100 row m-4 text-center" th:each="num : ${#numbers.sequence(0, 2)}">
+        <div class="d-flex justify-content-around">
+            <div class="col-2 bg-black text-white align-items-center align-middle" th:text="${num + 1}"></div>
+            <div class="col-10 text-xxl-center">
+                <div class="d-flex justify-content-around">
+                    <div th:text="${rankingList.get(num).email()}">email</div>
+                    <div th:text="${rankingList.get(num).playDate()}">playdate</div>
                 </div>
+            </div>
+        </div>
+        <div class="progress mt-3" style="height: 24px;">
+            <div class="progress-bar"
+                 role="progressbar"
+                 th:style="${'width: ' + #numbers.formatInteger(100.0 * rankingList.get(num).score() / rankingList.get(0).score(), 0) + '%'}"
+                 th:text="${rankingList.get(num).score()}"
+                 aria-valuenow="${rankingList.get(num).score()}"
+                 aria-valuemin="0"
+                 aria-valuemax="100%">
             </div>
         </div>
     </div>
 
-    <table class="table-hover m-4">
+    <table class="table table-hover m-4">
         <tr>
             <td>Ranking</td>
             <td>Email</td>
