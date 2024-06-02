@@ -1,13 +1,18 @@
 package com.baseball.bullsandcows.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baseball.bullsandcows.domain.GameDTO;
 import com.baseball.bullsandcows.domain.GameForm;
@@ -34,31 +39,35 @@ public class GameController {
 	}
 
 	@PostMapping("/api/checkNum")
-	public String conductRound(@RequestBody GameForm gameForm, Model model) {
+	@ResponseBody
+	public ResponseEntity<GameDTO> conductRound(@RequestBody GameForm gameForm) {
 
-		Optional<User> one = userService.findOne(gameForm.getUserID());
+		try {
 
-		User user = one.orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않는 유저입니다."));
+			Optional<User> one = userService.findOne(gameForm.getUserID());
+			User user = one.orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않는 유저입니다."));
 
-		switch (gameForm.getGameOption()) {
-			case "new" -> {
-				GameDTO gameDTO = gameService.newGame(user);
-				model.addAttribute("gameDTO", gameDTO);
-				return "/index";
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+			switch (gameForm.getGameOption()) {
+				case "new" -> {
+					return new ResponseEntity<>(gameService.newGame(user), headers, HttpStatus.OK);
+				}
+				case "next" -> {
+					return new ResponseEntity<>(gameService.moveNextStage(user, gameForm.getGameID()), headers,
+						HttpStatus.OK);
+				}
+				case "continue" -> {
+					return new ResponseEntity<>(gameService.judgeGame(gameForm.getNum(), gameForm.getGameID(), user),
+						headers, HttpStatus.OK);
+				}
 			}
-			case "next" -> {
-				GameDTO gameDTO = gameService.moveNextStage(user, gameForm.getGameID());
-				model.addAttribute("gameDTO", gameDTO);
-				return "/index";
-			}
-			case "continue" -> {
 
-				GameDTO gameDTO = gameService.judgeGame(gameForm.getNum(), gameForm.getGameID(), user);
-				model.addAttribute("gameDTO", gameDTO);
-				return "/index";
-			}
+		} catch (IllegalStateException | IllegalArgumentException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return "redirect:/404error";
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }
