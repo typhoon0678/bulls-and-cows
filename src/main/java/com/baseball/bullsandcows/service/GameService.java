@@ -34,7 +34,6 @@ public class GameService {
 			.build();
 
 		Game saveGame = gameRepository.save(game);
-
 		return GameDTO.builder()
 			.gameID(saveGame.getId())
 			.userID(saveGame.getUser().getId())
@@ -47,9 +46,7 @@ public class GameService {
 	public GameDTO moveNextStage(User user, Long gameID) {
 
 		Optional<Game> findGame = gameRepository.findByIdAndUser(gameID, user);
-
 		Game game = findGame.orElseThrow(() -> new IllegalStateException("게임아이디와 유저아이디가 일치하지 않습니다."));
-
 		String randomNums = randomNumsToString();
 
 		int addScore = calculateStageScore(game.getTryCount());
@@ -73,7 +70,7 @@ public class GameService {
 	}
 
 	private int calculateStageScore(int tryCount) {
-		return (5 - tryCount) * 100;
+		return (tryCount + 1) * 100;
 	}
 
 	public GameDTO judgeGame(String inputNums, Long gameID, User user) {
@@ -130,7 +127,6 @@ public class GameService {
 		}
 
 		return gameDTO;
-
 	}
 
 	public List<Game> findAll() {
