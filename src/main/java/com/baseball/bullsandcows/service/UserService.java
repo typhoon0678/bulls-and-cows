@@ -1,7 +1,12 @@
 package com.baseball.bullsandcows.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baseball.bullsandcows.domain.User;
 import com.baseball.bullsandcows.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -11,4 +16,9 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
+
+	public Optional<User> findOne(Long id) {
+		return userRepository.findById(id);
+	}
+
 }
