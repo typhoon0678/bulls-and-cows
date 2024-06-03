@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.baseball.bullsandcows.domain.Game;
 import com.baseball.bullsandcows.domain.User;
+import com.baseball.bullsandcows.dto.BestRankingResponse;
 import com.baseball.bullsandcows.dto.MyPageViewResponse;
 import com.baseball.bullsandcows.dto.RankingListViewResponse;
+import com.baseball.bullsandcows.repository.UserRepository;
 import com.baseball.bullsandcows.service.GameService;
 import com.baseball.bullsandcows.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-
 
 @RequiredArgsConstructor
 @Controller
@@ -22,6 +23,7 @@ public class GameViewController {
 
 	private final GameService gameService;
 	private final UserService userService;
+	private final UserRepository userRepository;
 
 	@GetMapping("/")
 	public String index() {
@@ -38,8 +40,11 @@ public class GameViewController {
 		List<Game> gameList = gameService.getGameByUserId(id);
 		model.addAttribute("gameList", gameList);
 
+		BestRankingResponse bestRankingResponse = gameService.getBestRanking(user.getId());
 		MyPageViewResponse stat = new MyPageViewResponse(
-			gameList.stream().mapToInt(Game::getScore).average().orElse(0),
+			bestRankingResponse.ranking(),
+			bestRankingResponse.bestScore(),
+			Math.round(gameList.stream().mapToInt(Game::getScore).average().orElse(0)),
 			gameList.size());
 		model.addAttribute("stat", stat);
 

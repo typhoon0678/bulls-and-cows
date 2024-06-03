@@ -1,7 +1,6 @@
 package com.baseball.bullsandcows.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +24,9 @@ public class SortGame {
 		}
 
 		List<Game> filteredScores = new ArrayList<>(highScoreMap.values());
-		filteredScores.sort(Collections.reverseOrder(
-			Comparator.comparing(Game::getScore)));
+		filteredScores.sort(
+			Comparator.comparing(Game::getScore).reversed()
+				.thenComparing(Game::getPlayDate));
 
 		return filteredScores;
 	}
