@@ -42,7 +42,8 @@ public class SecurityConfig {
 				authorizeRequests -> authorizeRequests.requestMatchers(new MvcRequestMatcher(introspector, "/api/user"))
 					.permitAll()
 					.anyRequest()
-					.authenticated())
+					.permitAll())
+					// .authenticated())
 			.oauth2Login(oauth2Login -> oauth2Login.userInfoEndpoint(
 				userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService)));
 
