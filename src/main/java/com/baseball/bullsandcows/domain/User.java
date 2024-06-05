@@ -32,6 +32,7 @@ public class User {
 
 	@Builder
 	public User(String email, Role role) {
+	public User(String email) {
 		this.email = email;
 		this.role = role;
 	}
