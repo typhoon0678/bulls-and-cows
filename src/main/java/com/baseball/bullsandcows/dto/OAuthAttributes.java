@@ -1,4 +1,4 @@
-package com.baseball.bullsandcows.DTO;
+package com.baseball.bullsandcows.dto;
 
 import java.util.Map;
 
