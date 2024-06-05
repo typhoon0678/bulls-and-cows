@@ -1,7 +1,7 @@
 package com.baseball.bullsandcows.service;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -66,7 +66,7 @@ public class GameService {
 
 		Optional<Game> updateGame = Optional.empty();
 
-		if(result > 0) {
+		if (result > 0) {
 			updateGame = gameRepository.findByIdAndUser(gameID, user);
 		}
 
@@ -90,7 +90,7 @@ public class GameService {
 		int result = gameRepository.judgeGameByIdAndUser(gameID, user);
 		Optional<Game> findGame = Optional.empty();
 
-		if(result > 0) {
+		if (result > 0) {
 			findGame = gameRepository.findByIdAndUser(gameID, user);
 		}
 
@@ -168,6 +168,9 @@ public class GameService {
 
 		int bestScore = (bestRecordIndex != -1) ? sortedGameList.get(bestRecordIndex).getScore() : 0;
 		return new BestRankingResponse(userID, bestRecordIndex + 1, bestScore);
+
+	}
+
 	private String randomNumsToString() {
 		NumsMaker numsMaker = new RandomNumsMaker();
 		List<Integer> randomNums = numsMaker.make(1, 9, 3);
@@ -176,10 +179,9 @@ public class GameService {
 		for (Integer randomNum : randomNums) {
 			stringBuffer.append(randomNum);
 		}
-	}
-
 		return stringBuffer.toString();
 	}
+
 	public List<RankingListViewResponse> getRanking() {
 
 		List<Game> sortedGameList = SortGame.getRanking(gameRepository.findAll());

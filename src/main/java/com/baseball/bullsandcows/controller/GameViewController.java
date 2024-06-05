@@ -11,7 +11,6 @@ import com.baseball.bullsandcows.domain.User;
 import com.baseball.bullsandcows.dto.BestRankingResponse;
 import com.baseball.bullsandcows.dto.MyPageViewResponse;
 import com.baseball.bullsandcows.dto.RankingListViewResponse;
-import com.baseball.bullsandcows.repository.UserRepository;
 import com.baseball.bullsandcows.service.GameService;
 import com.baseball.bullsandcows.service.UserService;
 
@@ -23,7 +22,6 @@ public class GameViewController {
 
 	private final GameService gameService;
 	private final UserService userService;
-	private final UserRepository userRepository;
 
 	@GetMapping("/")
 	public String index() {
