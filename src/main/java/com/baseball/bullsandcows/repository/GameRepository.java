@@ -20,12 +20,14 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
 	@Transactional
 	@Modifying
-	@Query("update Game g set g.tryCount = g.tryCount - 1 where g.id = :id and g.user = :user")
+	@Query("update Game g set g.tryCount = g.tryCount - 1 "
+		+ "where g.id = :id and g.user = :user")
 	int judgeGameByIdAndUser(@Param("id") Long id, @Param("user") User user);
 
 	@Transactional
 	@Modifying
-	@Query("update Game g set  g.nums = :nums, g.score = g.score + :score, g.tryCount = 5 where g.id = :id and g.user = :user")
+	@Query("update Game g set  g.nums = :nums, g.score = g.score + :score, g.tryCount = 5 "
+		+ "where g.id = :id and g.user = :user")
 	int updateNextStageGame(
 		@Param("nums") String nums,
 		@Param("score") int score,

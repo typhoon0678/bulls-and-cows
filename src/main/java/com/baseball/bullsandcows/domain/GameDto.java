@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class GameDTO {
+public class GameDto {
 
 	Long gameID;
 	Long userID;
