@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Bulls And Cows</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <!--    <link href="/css/bootstrap.min.css" rel="stylesheet">-->
-  <!--    <script src="/js/bootstrap.bundle.min.js"></script>-->
-  <!--    <script src="/js/jquery-3.7.1.min.js"></script>-->
     <meta charset="UTF-8">
     <title>Bulls And Cows</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -17,7 +9,6 @@
 </head>
 <body>
 
-<!--<header th:replace="/header :: header"></header>-->
 <header th:replace="/header :: header"></header>
 
 <main class="container-fluid">
@@ -34,40 +25,7 @@
                 <div class="container d-flex justify-content-center align-items-center" id="div-score" style="font-size: 24px; height: 64px;"></div>
             </div>
     </div>
-  <div class="mh-100" style="height: 200px;">
-    <div class="d-flex justify-content-around">
-      <div class="container d-flex justify-content-center my-4" id="div-info" style="font-size: 24px"></div>
-      <div class="container d-flex justify-content-center my-4" id="div-score" style="font-size: 24px"></div>
-    </div>
 
-    <a class="btn btn-primary d-flex justify-content-center m-3" id="btn-play">Play</a>
-    <a class="btn btn-outline-primary d-flex justify-content-center m-3" id="btn-next">Next</a>
-  </div>
-
-  <div class="row">
-    <th:block th:each="i : ${#numbers.sequence(1, 5)}">
-      <div class="m-2 border border-secondary container-fluid"
-           style="display: block; width: 300px; height: 200px;"
-           th:id="'div-try-' + ${i}">
-        <div class="row h-50">
-          <th:block th:each="j : ${#numbers.sequence(1, 3)}">
-            <div class="col border border-primary d-flex align-items-center justify-content-center">
-              <img th:id="'img-circle-' + ${i} + '-' + ${j}"
-                   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
-                   th:alt="'circle-' + ${j}">
-            </div>
-          </th:block>
-        </div>
-        <div class="row h-50">
-          <th:block th:each="j : ${#numbers.sequence(1, 3)}">
-            <div class="col border border-primary d-flex align-items-center justify-content-center"
-            ><h3 th:id="'judge-' + ${i} + '-' + ${j}" style="-webkit-text-stroke: 0.4px black;"></h3>
-            </div>
-          </th:block>
-        </div>
-      </div>
-    </th:block>
-  </div>
     <div class="d-flex flex-wrap justify-content-center">
         <th:block th:each="i : ${#numbers.sequence(1, 5)}">
             <div class="m-2 border border-secondary container-fluid"
@@ -93,11 +51,6 @@
         </th:block>
     </div>
 
-  <div class="container-fluid d-flex justify-content-center">
-    <th:block th:each="i : ${#numbers.sequence(0, 9)}">
-      <button class="btn btn-outline-primary m-2" th:id="'btn-num-' + ${i}">[[${i}]]</button>
-    </th:block>
-  </div>
     <div class="container-fluid d-flex justify-content-center">
         <th:block th:each="i : ${#numbers.sequence(1, 9)}">
             <button class="btn btn-outline-primary m-2" th:id="'btn-num-' + ${i}">[[${i}]]</button>
@@ -114,45 +67,24 @@
 
 <script th:inline="javascript">
 
-  var gameID = 19;
-  var userID = 3;
-  var tryCount = -1
-  var score = 0;
     let gameID = 0;
     let userID = 6;
     let tryCount = -1
     let score = 0;
 
-  var fillNumIndex = 1;
-  var dataNumList = [1, 2, 3];
-  var dataNum = "123";
     let fillNumIndex = 1;
     let dataNumList = [1, 2, 3];
     let dataNum = "123";
 
-  var stage = 1;
     let stage = 1;
 
-  const divTryIDHead = "#div-try-";
-  var divTryID = divTryIDHead + "1";
     const divTryIDHead = "#div-try-";
     let divTryID = divTryIDHead + "1";
 
-  const imgSrcHead = "../static/image/circle-";
-  const imgFormat = ".png";
-  var imgSrc = imgSrcHead + "1" + imgFormat;
     const imgSrcHead = "/static/image/circle-";
     const imgFormat = ".png";
     var imgSrc = imgSrcHead + "1" + imgFormat;
 
-  const imgCircleIDHead = "#img-circle-";
-  var imgCircleID = imgCircleIDHead + "1" + "-" + "1";
-  var imgCircleList = [];
-  for (let i = 1; i <= 5; i++) {
-    for (let j = 1; j <= 3; j++) {
-      imgCircleList.push($(divTryIDHead + i + " " + imgCircleIDHead + i + "-" + j));
-    }
-  }
     const imgCircleIDHead = "#img-circle-";
     let imgCircleID = imgCircleIDHead + "1" + "-" + "1";
     let imgCircleList = [];
@@ -170,14 +102,6 @@
             divJudgeList.push($(divTryIDHead + i + " " + divJudgeIDHead + i + "-" + j));
         }
     }
-  const divJudgeIDHead = "#judge-";
-  var divJudgeID = divJudgeIDHead + "1" + "-" + "1";
-  var divJudgeList = [];
-  for (let i = 1; i <= 5; i++) {
-    for (let j = 1; j <= 3; j++) {
-      divJudgeList.push($(divTryIDHead + i + " " + divJudgeIDHead + i + "-" + j));
-    }
-  }
 
     const btnNumIDHead = "#btn-num-";
     let btnNumID = btnNumIDHead + "1";
@@ -185,12 +109,6 @@
     for (let i = 1; i <= 9; i++) {
         btnNumList.push($(btnNumIDHead + i));
     }
-  const btnNumIDHead = "#btn-num-";
-  var btnNumID = btnNumIDHead + "1";
-  var btnNumList = [];
-  for (let i = 0; i <= 9; i++) {
-    btnNumList.push($(btnNumIDHead + i));
-  }
 
     let isPlay = false;
     let judgeList = [];
@@ -200,26 +118,18 @@
     const judgeTextList = [" Strike", " Ball", " Out"];
     const judgeColorList = ["green", "yellow", "red"];
 
-
-  $.each(btnNumList, function (index, btnNum) {
-    btnNum.on("click", function () {
-      if (fillNumIndex > 3) return;
     $.each(btnNumList, function (index, btnNum) {
         btnNum.on("click", function () {
             let imgNum = index + 1;
 
             if (fillNumIndex > 3) return;
 
-      imgSrc = imgSrcHead + index + imgFormat
-      divTryID = divTryIDHead + (6 - tryCount);
-      imgCircleID = imgCircleIDHead + (6 - tryCount) + "-" + fillNumIndex;
             imgSrc = imgSrcHead + imgNum + imgFormat
             divTryID = divTryIDHead + (6 - tryCount);
             imgCircleID = imgCircleIDHead + (6 - tryCount) + "-" + fillNumIndex;
 
             $(divTryID + " " + imgCircleID).attr("src", imgSrc);
 
-      dataNumList[fillNumIndex - 1] = index;
             dataNumList[fillNumIndex - 1] = imgNum;
 
             fillNumIndex++;
@@ -259,37 +169,20 @@
                 responseLog(res);
                 fillNumIndex = 1;
 
-        var divTryID = divTryIDHead + (6 - tryCount);
                 judgeList = [res.judgement[0], res.judgement[1], 3 - res.judgement[0] - res.judgement[1]]
                 divTryID = divTryIDHead + (6 - tryCount);
 
-        for (let i = 1; i <= 3; i++) {
-          var divJudgeID = divJudgeIDHead + (6 - tryCount) + "-" + i;
                 for (let i = 1; i <= 3; i++) {
                     divJudgeID = divJudgeIDHead + (6 - tryCount) + "-" + i;
                     judgeText = judgeList[i-1] + judgeTextList[i-1];
 
-          if (i <= res.judgement[0]) {
-            $(divTryID + " " + divJudgeID).text("Strike");
-            $(divTryID + " " + divJudgeID).css("color", "green");
-          } else if (i <= res.judgement[0] + res.judgement[1]) {
-            $(divTryID + " " + divJudgeID).text("Ball");
-            $(divTryID + " " + divJudgeID).css("color", "yellow");
-          } else {
-            $(divTryID + " " + divJudgeID).text("Out");
-            $(divTryID + " " + divJudgeID).css("color", "red");
-          }
-        }
                     $(divTryID + " " + divJudgeID).text(judgeText);
                 }
 
                 if (res.gameResult === "continue") {
                     tryCount = res.tryCount;
-        if (res.gameResult === "continue") {
-          tryCount -= 1; // tryCount = res.tryCount;
 
                     updateInfoScore("Stage : " + stage, score);
-          updateInfoScore("Stage " + stage, score);
 
                 } else if (res.gameResult === "next") {
                     tryCount = -1;
@@ -302,16 +195,9 @@
                 } else if (res.gameResult === "gameOver") {
                     tryCount = -1;
                     isPlay = false;
-        } else if (res.gameResult === "gameOver") {
-          tryCount = -1;
-          console.log("gameOver");
 
                     updateInfoScore("GameOver", res.totalScore);
-                    $("#div-score").text("GameOver");
                     $("#btn-play").css("visibility", "visible");
-          $("#div-score").text("GameOver");
-          updateInfoScore("GameOver", res.totalScore);
-          $("#btn-play").css("visibility", "visible");
 
                 } else {
                     alert("Error");
@@ -345,12 +231,6 @@
                 isPlay = true;
                 updateInfoScore("Stage : " + 1, 0);
                 resetImgAndJudge();
-        gameID = res.gameID;
-        tryCount = 5; // tryCount = res.tryCount;
-        fillNumIndex = 1;
-        stage = 1;
-        updateInfoScore("Stage " + 1, 0);
-        resetImgAndJudge();
 
                 $("#btn-play").css("visibility", "hidden");
 
@@ -375,10 +255,6 @@
             success: function (res) {
                 responseLog(res);
 
-        gameID = res.gameID;
-        tryCount = 5; // tryCount = res.tryCount;
-        fillNumIndex = 1;
-        stage++;
                 gameID = res.gameID;
                 tryCount = 5;
                 fillNumIndex = 1;

@@ -43,7 +43,7 @@ public class SecurityConfig {
 					.permitAll()
 					.anyRequest()
 					.permitAll())
-			// .authenticated())
+					// .authenticated())
 			.oauth2Login(oauth2Login -> oauth2Login.userInfoEndpoint(
 				userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService)));
 
