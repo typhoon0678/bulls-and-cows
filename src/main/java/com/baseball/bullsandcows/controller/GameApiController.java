@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baseball.bullsandcows.domain.GameDTO;
+import com.baseball.bullsandcows.domain.GameDto;
 import com.baseball.bullsandcows.domain.GameForm;
 import com.baseball.bullsandcows.domain.User;
-import com.baseball.bullsandcows.dto.CheckNumRequest;
-import com.baseball.bullsandcows.dto.CheckNumResponse;
 import com.baseball.bullsandcows.service.GameService;
 import com.baseball.bullsandcows.service.UserService;
 
@@ -39,7 +37,7 @@ public class GameApiController {
 	}
 
 	@PostMapping("/api/checkNum")
-	public ResponseEntity<GameDTO> conductRound(@RequestBody GameForm gameForm) {
+	public ResponseEntity<GameDto> conductRound(@RequestBody GameForm gameForm) {
 
 		try {
 

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.baseball.bullsandcows.domain.Game;
-import com.baseball.bullsandcows.domain.GameDTO;
+import com.baseball.bullsandcows.domain.GameDto;
 import com.baseball.bullsandcows.domain.NumsMaker;
 import com.baseball.bullsandcows.domain.RandomNumsMaker;
 import com.baseball.bullsandcows.domain.User;
@@ -33,7 +33,7 @@ public class GameService {
 	private final GameRepository gameRepository;
 	private final UserRepository userRepository;
 
-	public GameDTO newGame(User user) {
+	public GameDto newGame(User user) {
 
 		String randomNums = randomNumsToString();
 
@@ -46,7 +46,7 @@ public class GameService {
 			.build();
 
 		Game saveGame = gameRepository.save(game);
-		return GameDTO.builder()
+		return GameDto.builder()
 			.gameID(saveGame.getId())
 			.userID(saveGame.getUser().getId())
 			.tryCount(saveGame.getTryCount())
@@ -55,7 +55,7 @@ public class GameService {
 
 	}
 
-	public GameDTO moveNextStage(User user, Long gameID) {
+	public GameDto moveNextStage(User user, Long gameID) {
 
 		Optional<Game> findGame = gameRepository.findByIdAndUser(gameID, user);
 		Game game = findGame.orElseThrow(() -> new IllegalStateException("게임아이디와 유저아이디가 일치하지 않습니다."));
@@ -72,7 +72,7 @@ public class GameService {
 
 		Game game1 = updateGame.orElseThrow(() -> new IllegalStateException("[ERROR] 업데이트 오류"));
 
-		return GameDTO.builder()
+		return GameDto.builder()
 			.gameID(game1.getId())
 			.userID(game1.getUser().getId())
 			.tryCount(game1.getTryCount())
@@ -85,7 +85,7 @@ public class GameService {
 		return (tryCount + 1) * 100;
 	}
 
-	public GameDTO judgeGame(String inputNums, Long gameID, User user) {
+	public GameDto judgeGame(String inputNums, Long gameID, User user) {
 
 		int result = gameRepository.judgeGameByIdAndUser(gameID, user);
 		Optional<Game> findGame = Optional.empty();
@@ -118,7 +118,7 @@ public class GameService {
 			}
 		}
 
-		GameDTO gameDTO = GameDTO.builder()
+		GameDto gameDto = GameDto.builder()
 			.gameID(game.getId())
 			.userID(game.getUser().getId())
 			.tryCount(game.getTryCount())
@@ -127,18 +127,18 @@ public class GameService {
 
 		if (strikeCount == 3) {
 
-			gameDTO.setGameResult("next");
-			gameDTO.setAddScore(calculateStageScore(game.getTryCount()));
-			gameDTO.setTotalScore(game.getScore());
+			gameDto.setGameResult("next");
+			gameDto.setAddScore(calculateStageScore(game.getTryCount()));
+			gameDto.setTotalScore(game.getScore());
 
 		} else if (game.getTryCount() <= 0) {
-			gameDTO.setGameResult("gameOver");
-			gameDTO.setTotalScore(game.getScore());
+			gameDto.setGameResult("gameOver");
+			gameDto.setTotalScore(game.getScore());
 		} else {
-			gameDTO.setGameResult("continue");
+			gameDto.setGameResult("continue");
 		}
 
-		return gameDTO;
+		return gameDto;
 	}
 
 	public List<Game> findAll() {
