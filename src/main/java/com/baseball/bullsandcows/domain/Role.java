@@ -13,4 +13,6 @@ public enum Role {
 	public String getKey() {
 		return key;
 	}
+
+	int a = 3;
 }
