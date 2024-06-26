@@ -1,5 +1,7 @@
 package com.baseball.bullsandcows.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.baseball.bullsandcows.domain.User;
@@ -13,8 +15,9 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
-	public User findById(Long id) {
-		return userRepository.findById(id).orElse(null);
+
+	public Optional<User> findOne(Long id) {
+		return userRepository.findById(id);
 	}
 
 }

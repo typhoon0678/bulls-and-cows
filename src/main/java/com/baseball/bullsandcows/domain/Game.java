@@ -1,6 +1,8 @@
 package com.baseball.bullsandcows.domain;
 
 import java.time.LocalDateTime;
+import java.util.regex.Pattern;
+
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -15,9 +17,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import lombok.ToString;
+
+
 @Entity
 @Getter
 @NoArgsConstructor
+
+@ToString
+
 public class Game {
 
 	@Id
@@ -46,6 +54,9 @@ public class Game {
 
 	@Builder
 	public Game(User user, int score, int tryCount, String nums, boolean isFinished) {
+
+		validateNums(nums);
+
 		this.user = user;
 		this.score = score;
 		this.tryCount = tryCount;
@@ -53,4 +64,32 @@ public class Game {
 		this.isFinished = isFinished;
 		this.playDate = LocalDateTime.now();
 	}
+
+	private void validateNums(String nums) {
+		validateNumsSize(nums);
+		validateNumsRange(nums);
+	}
+
+	private void validateNumsSize(String nums) {
+
+		if (nums.length() != 3) {
+			throw new IllegalStateException("[ERROR] 3자리 숫자만 가능합니다.");
+		}
+	}
+
+	private void validateNumsRange(String nums) {
+
+		Pattern pattern = Pattern.compile("^[1-9]");
+
+		String[] split = nums.split("");
+
+		for (String eachNum : split) {
+
+			if (!pattern.matcher(eachNum).matches()) {
+				throw new IllegalStateException("[ERROR] 1~9 범위의 숫자만 가능합니다.");
+			}
+		}
+
+	}
+
 }
