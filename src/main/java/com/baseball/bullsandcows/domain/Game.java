@@ -3,6 +3,7 @@ package com.baseball.bullsandcows.domain;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
+
 import org.hibernate.annotations.ColumnDefault;
 
 import jakarta.persistence.Column;
@@ -15,12 +16,16 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import lombok.ToString;
+
 
 @Entity
 @Getter
 @NoArgsConstructor
+
 @ToString
+
 public class Game {
 
 	@Id
@@ -86,4 +91,5 @@ public class Game {
 		}
 
 	}
+
 }
